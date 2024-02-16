@@ -1,0 +1,33 @@
+{
+  "name": "sellout",
+  "version": "1.0.0",
+  "description": "A Mock Product app",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon server.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "seed": "node ./app/models/seedProduct.js"
+  },
+  "author": "Brian Taylor",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.1",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
+    "method-override": "^3.0.0",
+    "mongodb": "^6.1.0",
+    "mongoose": "^7.6.8",
+    "passport": "^0.6.0",
+    "passport-http-bearer": "^1.0.1"
+  },
+  "directories": {
+    "lib": "lib"
+  },
+  "keywords": [],
+  "devDependencies": {
+    "@flydotio/dockerfile": "^0.5.2",
+    "nodemon": "^3.0.3"
+  }
+}
