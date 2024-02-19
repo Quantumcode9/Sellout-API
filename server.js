@@ -56,7 +56,8 @@ app.use(productRoutes)
 
 app.use(errorHandler)
 
-app.listen(port, () => {
-	console.log('listening on port ' + port)
-})
+app.listen(PORT, '0.0.0.0', () => {
+	console.log(`Server is running on port ${PORT}`);
+  });
+  
 module.exports = app
