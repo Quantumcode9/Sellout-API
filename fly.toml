@@ -1,10 +1,10 @@
-# fly.toml app configuration file generated for sellout-api on 2024-02-16T09:15:43-05:00
+# fly.toml app configuration file generated for sellout-api-winter-water-343 on 2024-02-19T15:02:30-05:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'sellout-api'
-primary_region = 'ewr'
+app = 'sellout-api-winter-water-343'
+primary_region = 'ord'
 
 [build]
 
