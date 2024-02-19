@@ -20,8 +20,8 @@ const db = require('./config/db')
 
 const auth = require('./lib/auth')
 
-const serverDevPort = 3000
-// const clientDevPort = 3000
+const serverDevPort = 8000
+ const clientDevPort = 3000
 
 mongoose.connect(db, {
 	useNewUrlParser: true,
@@ -56,8 +56,12 @@ app.use(productRoutes)
 
 app.use(errorHandler)
 
-app.listen(port, '0.0.0.0', () => {
-    console.log(`Server is running on port ${port}`);
-});
+// app.listen(port, '0.0.0.0', () => {
+//     console.log(`Server is running on port ${port}`);
+// });
+
+app.listen(port, () => {
+	console.log('listening on port ' + port)
+})
 
 module.exports = app
