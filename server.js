@@ -20,7 +20,7 @@ const db = require('./config/db')
 
 const auth = require('./lib/auth')
 
-const serverDevPort = 8000
+const serverDevPort = 4000
  const clientDevPort = 3000
 
 mongoose.connect(db, {
