@@ -51,4 +51,75 @@ router.delete('/delete-from-cart', requireToken, (req, res, next) => {
     .catch(next);
 });
 
+// Soundbar routes
+router.post('/add-soundbar-to-cart', requireToken, (req, res, next) => {
+  const soundbarId = req.body.soundbarId;
+  
+  User.findById(req.user.id)
+    .then(user => {
+      if (user.cart.includes(soundbarId)) {
+        throw new Error('Item already in cart');
+      } else {
+      user.cart.push(soundbarId);
+      return user.save();
+      }
+    })
+    .then(user => res.status(200).json({ user: user.toObject() }))
+    .catch(next);
+});
+
+router.delete('/delete-soundbar-from-cart', requireToken, (req, res, next) => {
+const soundbarId = req.body.soundbarId;
+User.findById(req.user.id)
+  .then(user => {
+    const index = user.cart.indexOf(soundbarId);
+    if (index !== -1) {
+      user.cart.splice(index, 1);
+      return user.save();
+    } else {
+      throw new Error('Item not found in cart');
+    }
+  })
+  .then(user => res.status(200).json({ user: user.toObject() }))
+  .catch(next);
+});
+
+// Product routes
+router.post('/add-product-to-cart', requireToken, (req, res, next) => {
+  const productId = req.body.productId
+
+  User.findById(req.user.id)
+    .then(user => {
+      if (user.cart.includes(productId)) {
+        throw new Error('Item already in cart')
+      } else {
+        user.cart.push(productId)
+        return user.save()
+      }
+    })
+    .then(user => res.status(200).json({ user: user.toObject() }))
+    .catch(next)
+})
+
+router.delete('/delete-product-from-cart', requireToken, (req, res, next) => {
+  const productId = req.body.productId
+
+  User.findById(req.user.id)
+    .then(user => {
+      const index = user.cart.indexOf(productId)
+      if (index !== -1) {
+        user.cart.splice(index, 1)
+        return user.save()
+      } else {
+        throw new Error('Item not found in cart')
+      }
+    })
+    .then(user => res.status(200).json({ user: user.toObject() }))
+    .catch(next)
+})
+
+
+
+
+
 module.exports = router;

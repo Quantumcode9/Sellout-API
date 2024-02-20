@@ -14,7 +14,7 @@ const router = express.Router()
 
 
 router.get('/search/:keyword', (req, res, next) => {
-  axios.get(`https://api.bestbuy.com/v1/products((search=${req.params.keyword})&onlineAvailability=true&condition=new)?apiKey=${process.env.BEST_BUY_API_KEY}&&sort=bestSellingRank.asc&show=details.name,dollarSavings,features.feature,image,inStoreAvailability,manufacturer,modelNumber,name,onlineAvailability,onSale,percentSavings,regularPrice,salePrice,sku,upc,details.value&facet=bestSellingRank,20&pageSize=3&format=json`)
+  axios.get(`https://api.bestbuy.com/v1/products((search=${req.params.keyword})&onlineAvailability=true&condition=new)?apiKey=${process.env.BEST_BUY_API_KEY}&&sort=bestSellingRank.asc&show=details.name,dollarSavings,features.feature,image,inStoreAvailability,manufacturer,modelNumber,name,onlineAvailability,onSale,percentSavings,regularPrice,salePrice,sku,upc,details.value&facet=bestSellingRank,20&pageSize=5&format=json`)
     .then((response) => {
       res.status(200).json({ products: response.data.products })
     })
@@ -23,7 +23,7 @@ router.get('/search/:keyword', (req, res, next) => {
 
 
 router.get('/products/:id', (req, res, next) => {
-  axios.get(`https://api.bestbuy.com/v1/products/${req.params.id}.json?apiKey=${process .env.BEST_BUY_API_KEY}`)
+  axios.get(`https://api.bestbuy.com/v1/products/${req.params.id}.json?apiKey=${process.env.BEST_BUY_API_KEY}`)
     .then((response) => {
       res.status(200).json({ product: response.data })
     })

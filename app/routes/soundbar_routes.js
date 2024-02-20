@@ -39,7 +39,6 @@ router.get('/soundbars', (req, res, next) => {
 })
 
 
-
 // SHOW
 // GET
 router.get('/soundbars/:id', (req, res, next) => {
@@ -53,39 +52,29 @@ router.get('/soundbars/:id', (req, res, next) => {
 
 
 // UPDATE
-router.patch('/soundbars/:tvId/:soundbarId', requireToken, removeBlanks, (req, res, next) => {
-    const { tvId, soundbarId } = req.params
+router.patch('/soundbars/:id', requireToken, removeBlanks, (req, res, next) => {
 
-	TV.findById(tvId)
+	Soundbar.findById(req.params.soundbarId)
 		.then(handle404)
-		.then((tv) => {
-            const theSoundbar = tv.soundbars.id(soundbarId)
-			requireOwnership(req, tv)
+		.then((soundbar) => {
+			requireOwnership(req, soundbar)
+			return soundbar.updateOne(req
+				.body.soundbar)
+		})
+		.then(() => res.sendStatus(204))
+		.catch(next)
 
-            theSoundbar.set(req.body.soundbar)
+})
 
-			return tv.save()
+
+// DELETE
+router.delete('/soundbars/:id', requireToken, (req, res, next) => {
+	Soundbar.findById(req.params.id)
+		.then(handle404)
+		.then((soundbar) => {
+			requireOwnership(req, soundbar)
+			soundbar.deleteOne()
 		})
 		.then(() => res.sendStatus(204))
 		.catch(next)
 })
-
-// DELETE & DESTROY
-router.delete('/soundbars/:tvId/:soundbarId', requireToken, removeBlanks, (req, res, next) => {
-
-    const { tvId, soundbarId } = req.params
-
-	TV.findById(tvId)
-		.then(handle404)
-		.then((tv) => {
-            const theSoundbar = tv.soundbars.id(soundbarId)
-			requireOwnership(req, tv)
-            theSoundbar.deleteOne()
-			return tv.save()
-		})
-		.then(() => res.sendStatus(204))
-
-		.catch(next)
-})
-
-module.exports = router
