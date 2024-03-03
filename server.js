@@ -9,6 +9,7 @@ const soundbarRoutes = require('./app/routes/soundbar_routes')
 const userRoutes = require('./app/routes/user_routes')
 const cartRoutes = require('./app/routes/cart_routes')
 const productRoutes = require('./app/routes/product_routes')
+const deviceRoutes = require('./app/routes/device_routes')
 
 
 // require middleware
@@ -53,13 +54,14 @@ app.use(soundbarRoutes)
 app.use(userRoutes)
 app.use(cartRoutes)
 app.use(productRoutes)
+app.use(deviceRoutes)
 
 app.use(errorHandler)
 
 
 
-// app.listen(port, () => {
-// 	console.log('listening on port ' + port)
-// })
+app.listen(port, () => {
+	console.log('listening on port ' + port)
+ })
 
 module.exports = app
