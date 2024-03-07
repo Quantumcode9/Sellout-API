@@ -25,51 +25,7 @@ router.get('/cart', requireToken, (req, res, next) => {
 
 
 
-
-// router.get('/cart', requireToken, async (req, res, next) => {
-    
-      
-//   try {
-//       const user = await User.findById(req.user.id);
-//       if (!user) {
-//           return res.status(404).json({ message: "User not found" });
-//       }
-
-//       // Fetch items from both collections
-//       const productFetch = Product.find({ '_id': { $in: user.cart }})
-//           .then(products => products.map(product => ({
-//               id: product._id,
-//               name: product.name,
-//               image: product.image,
-//               regularPrice: product.regularPrice,
-//               sku: product.sku,
-//               salePrice: product.salePrice,
-//               type: 'product' 
-//           })));
-
-//       const tvFetch = TV.find({ '_id': { $in: user.cart }})
-//           .then(tvs => tvs.map(tv => ({
-//               id: tv._id, 
-//               name: tv.name,
-//               image: tv.image,
-//               sku: tv.sku,
-//               price: tv.price,
-//               type: 'tv' 
-//           })));
-
-//       const [products, tvs] = await Promise.all([productFetch, tvFetch]);
-
-//       const cartItems = [...products, ...tvs].filter(item => item !== undefined);
-
-//       res.status(200).json({ cart: cartItems });
-//   } catch (error) {
-//       next(error);
-//   }
-// });
-
-
 //adds items to the cart by user id and tv id then saves the user 
-//returns the user object with the new cart array 
 router.post('/add-to-cart', requireToken, (req, res, next) => {
     const tvId = req.body.tvId;
     
