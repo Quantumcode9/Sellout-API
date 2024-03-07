@@ -1,5 +1,7 @@
 const mongoose = require('mongoose')
 
+
+
 const userSchema = new mongoose.Schema(
     {
         email: {
@@ -18,9 +20,13 @@ const userSchema = new mongoose.Schema(
         token: String,
         cart: [{
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'TV'
+            ref: 'TV',
+        }],  
+        cart2: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Product',
         }],
-    },
+        },
     {
         timestamps: true,
         toObject: {

@@ -14,7 +14,7 @@ const router = express.Router()
 
 
 router.get('/search/:keyword', (req, res, next) => {
-  axios.get(`https://api.bestbuy.com/v1/products((search=${req.params.keyword})&onlineAvailability=true&condition=new)?apiKey=${process.env.BEST_BUY_API_KEY}&&sort=bestSellingRank.asc&show=details.name,dollarSavings,features.feature,image,inStoreAvailability,manufacturer,modelNumber,name,onlineAvailability,onSale,percentSavings,regularPrice,salePrice,sku,upc,details.value&facet=bestSellingRank,20&pageSize=5&format=json`)
+  axios.get(`https://api.bestbuy.com/v1/products((search=${req.params.keyword})&onlineAvailability=true&condition=new)?apiKey=${process.env.BEST_BUY_API_KEY}&&sort=bestSellingRank.asc&show=details.name,dollarSavings,features.feature,image,inStoreAvailability,manufacturer,modelNumber,name,onlineAvailability,onSale,percentSavings,regularPrice,salePrice,sku,upc,details.value&facet=bestSellingRank,20&pageSize=6&format=json`)
     .then((response) => {
       res.status(200).json({ products: response.data.products })
     })
@@ -23,7 +23,7 @@ router.get('/search/:keyword', (req, res, next) => {
 
 
 router.get('/laptop/deals', (req, res, next) => {
-  axios.get(`https://api.bestbuy.com/v1/products(onlineAvailability=true&condition=new&onSale=true&percentSavings>30&(categoryPath.id=abcat0502000))?apiKey=${process.env.BEST_BUY_API_KEY}&sort=dollarSavings.dsc&show=categoryPath.id,categoryPath.name,details.name,details.value,dollarSavings,features.feature,image,inStoreAvailability,manufacturer,modelNumber,name,regularPrice,salePrice,sku,upc&facet=onSale,10&pageSize=4&format=json`)
+  axios.get(`https://api.bestbuy.com/v1/products(onlineAvailability=true&condition=new&onSale=true&percentSavings>30&(categoryPath.id=abcat0502000))?apiKey=${process.env.BEST_BUY_API_KEY}&sort=dollarSavings.dsc&show=categoryPath.id,categoryPath.name,details.name,details.value,dollarSavings,features.feature,image,inStoreAvailability,manufacturer,modelNumber,name,regularPrice,salePrice,sku,upc&facet=onSale,10&pageSize=6&format=json`)
     .then((response) => {
       res.status(200).json({ products: response.data.products })
     })
@@ -32,7 +32,7 @@ router.get('/laptop/deals', (req, res, next) => {
 )
 
 router.get('/streaming/deals', (req, res, next) => {
-  axios.get(`https://api.bestbuy.com/v1/products(onlineAvailability=true&condition=new&onSale=true&percentSavings>30&(categoryPath.id=pcmcat161100050040))?apiKey=${process.env.BEST_BUY_API_KEY}&sort=dollarSavings.dsc&show=categoryPath.id,categoryPath.name,details.name,details.value,dollarSavings,features.feature,image,inStoreAvailability,manufacturer,modelNumber,name,regularPrice,salePrice,sku,upc&facet=onSale,10&pageSize=4&format=json`)
+  axios.get(`https://api.bestbuy.com/v1/products(onlineAvailability=true&condition=new&onSale=true&percentSavings>30&(categoryPath.id=pcmcat161100050040))?apiKey=${process.env.BEST_BUY_API_KEY}&sort=dollarSavings.dsc&show=categoryPath.id,categoryPath.name,details.name,details.value,dollarSavings,features.feature,image,inStoreAvailability,manufacturer,modelNumber,name,regularPrice,salePrice,sku,upc&facet=onSale,10&pageSize=8&format=json`)
     .then((response) => {
       res.status(200).json({ products: response.data.products })
     })
@@ -41,7 +41,7 @@ router.get('/streaming/deals', (req, res, next) => {
 )
 
 router.get('/tv/deals', (req, res, next) => {
-  axios.get(`https://api.bestbuy.com/v1/products(onlineAvailability=true&condition=new&onSale=true&percentSavings>30&(categoryPath.id=abcat0101000))?apiKey=${process.env.BEST_BUY_API_KEY}&sort=dollarSavings.dsc&show=categoryPath.id,categoryPath.name,details.name,details.value,dollarSavings,features.feature,image,inStoreAvailability,manufacturer,modelNumber,name,regularPrice,salePrice,sku,upc&facet=onSale,10&pageSize=4&format=json`)
+  axios.get(`https://api.bestbuy.com/v1/products(onlineAvailability=true&condition=new&onSale=true&percentSavings>30&(categoryPath.id=abcat0101000))?apiKey=${process.env.BEST_BUY_API_KEY}&sort=dollarSavings.dsc&show=categoryPath.id,categoryPath.name,details.name,details.value,dollarSavings,features.feature,image,inStoreAvailability,manufacturer,modelNumber,name,regularPrice,salePrice,sku,upc&facet=onSale,10&pageSize=6&format=json`)
     .then((response) => {
       res.status(200).json({ products: response.data.products })
     })

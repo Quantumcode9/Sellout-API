@@ -28,8 +28,3 @@ const ProductSchema = new mongoose.Schema({
 
 module.exports = mongoose.model('Product', ProductSchema);
 
-// const TVSchema = new mongoose.Schema({
-//   products: [ProductSchema]
-// });
-
-// module.exports = mongoose.model('TV', TVSchema);

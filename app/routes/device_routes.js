@@ -39,6 +39,31 @@ router.get('/devices/:id', (req, res, next) => {
         .catch(next)
 })
 
+// PATCH request to update a device
+router.patch('/devices/:id', requireToken, removeBlanks, (req, res, next) => {
+
+    StreamingDevice.findById(req.params.deviceId)
+        .then(handle404)
+        .then((device) => {
+        requireOwnership(req, device)
+        return device.updateOne(req.body.device)
+        })
+        .then(() => res.sendStatus(204))
+        .catch(next)
+})
+
+// DELETE request to delete a device
+router.delete('/devices/:id', requireToken, (req, res, next) => {
+    StreamingDevice.findById(req.params.deviceId)
+        .then(handle404)
+        .then((device) => {
+        requireOwnership(req, device)
+        device.deleteOne()
+        })
+        .then(() => res.sendStatus(204))
+        .catch(next)
+})
+
 
 
 module.exports = router;
