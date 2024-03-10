@@ -7,14 +7,6 @@ const requireToken = passport.authenticate('bearer', { session: false })
 const router = express.Router()
 
 
-// get cart items by user id and populates the cart
-// returns the user object with the cart array
-// router.get('/cart', requireToken, (req, res, next) => {
-//     User.findById(req.user.id)
-//       .populate('cart')
-//       .then(user => res.status(200).json({ cart: user.cart }))
-//       .catch(next);
-//   });
 
 router.get('/cart', requireToken, (req, res, next) => {
   User.findById(req.user.id)
@@ -118,7 +110,7 @@ router.delete('/delete-product-from-cart', requireToken, (req, res, next) => {
     .then(user => {
       const index = user.cart2.indexOf(productId)
       if (index !== -1) {
-        user.cart.splice(index, 1)
+        user.cart2.splice(index, 1)
         return user.save()
       } else {
         throw new Error('Item not found in cart')
