@@ -14,7 +14,7 @@ const router = express.Router()
 
 
 router.get('/search/:keyword', (req, res, next) => {
-  axios.get(`https://api.bestbuy.com/v1/products((search=${req.params.keyword})&onlineAvailability=true&condition=new)?apiKey=${process.env.BEST_BUY_API_KEY}&&sort=bestSellingRank.asc&show=details.name,dollarSavings,features.feature,image,inStoreAvailability,manufacturer,modelNumber,name,onlineAvailability,onSale,percentSavings,regularPrice,salePrice,sku,upc,details.value&facet=bestSellingRank,20&pageSize=6&format=json`)
+  axios.get(`https://api.bestbuy.com/v1/products((search=${req.params.keyword})&onlineAvailability=true&condition=new)?apiKey=${process.env.BEST_BUY_API_KEY}&&sort=bestSellingRank.asc&show=details.name,dollarSavings,features.feature,image,inStoreAvailability,manufacturer,modelNumber,name,onlineAvailability,onSale,percentSavings,regularPrice,salePrice,sku,upc,details.value&facet=bestSellingRank,20&pageSize=10&format=json`)
     .then((response) => {
       res.status(200).json({ products: response.data.products })
     })
@@ -23,7 +23,7 @@ router.get('/search/:keyword', (req, res, next) => {
 
 
 router.get('/laptop/deals', (req, res, next) => {
-  axios.get(`https://api.bestbuy.com/v1/products(onlineAvailability=true&condition=new&onSale=true&percentSavings>30&(categoryPath.id=abcat0502000))?apiKey=${process.env.BEST_BUY_API_KEY}&sort=dollarSavings.dsc&show=categoryPath.id,categoryPath.name,details.name,details.value,dollarSavings,features.feature,image,inStoreAvailability,manufacturer,modelNumber,name,regularPrice,salePrice,sku,upc&facet=onSale,10&pageSize=6&format=json`)
+  axios.get(`https://api.bestbuy.com/v1/products(onlineAvailability=true&condition=new&onSale=true&percentSavings>30&(categoryPath.id=abcat0502000))?apiKey=${process.env.BEST_BUY_API_KEY}&sort=dollarSavings.dsc&show=categoryPath.id,categoryPath.name,details.name,details.value,dollarSavings,features.feature,image,inStoreAvailability,manufacturer,modelNumber,name,regularPrice,salePrice,sku,upc&facet=onSale,10&pageSize=10&format=json`)
     .then((response) => {
       res.status(200).json({ products: response.data.products })
     })
@@ -32,7 +32,7 @@ router.get('/laptop/deals', (req, res, next) => {
 )
 
 router.get('/streaming/deals', (req, res, next) => {
-  axios.get(`https://api.bestbuy.com/v1/products(onlineAvailability=true&condition=new&onSale=true&percentSavings>30&(categoryPath.id=pcmcat161100050040))?apiKey=${process.env.BEST_BUY_API_KEY}&sort=dollarSavings.dsc&show=categoryPath.id,categoryPath.name,details.name,details.value,dollarSavings,features.feature,image,inStoreAvailability,manufacturer,modelNumber,name,regularPrice,salePrice,sku,upc&facet=onSale,10&pageSize=8&format=json`)
+  axios.get(`https://api.bestbuy.com/v1/products(onlineAvailability=true&condition=new&onSale=true&percentSavings>30&(categoryPath.id=pcmcat161100050040))?apiKey=${process.env.BEST_BUY_API_KEY}&sort=dollarSavings.dsc&show=categoryPath.id,categoryPath.name,details.name,details.value,dollarSavings,features.feature,image,inStoreAvailability,manufacturer,modelNumber,name,regularPrice,salePrice,sku,upc&facet=onSale,10&pageSize=10&format=json`)
     .then((response) => {
       res.status(200).json({ products: response.data.products })
     })
@@ -41,7 +41,7 @@ router.get('/streaming/deals', (req, res, next) => {
 )
 
 router.get('/tv/deals', (req, res, next) => {
-  axios.get(`https://api.bestbuy.com/v1/products(onlineAvailability=true&condition=new&onSale=true&percentSavings>30&(categoryPath.id=abcat0101000))?apiKey=${process.env.BEST_BUY_API_KEY}&sort=dollarSavings.dsc&show=categoryPath.id,categoryPath.name,details.name,details.value,dollarSavings,features.feature,image,inStoreAvailability,manufacturer,modelNumber,name,regularPrice,salePrice,sku,upc&facet=onSale,10&pageSize=6&format=json`)
+  axios.get(`https://api.bestbuy.com/v1/products(onlineAvailability=true&condition=new&onSale=true&percentSavings>30&(categoryPath.id=abcat0101000))?apiKey=${process.env.BEST_BUY_API_KEY}&sort=dollarSavings.dsc&show=categoryPath.id,categoryPath.name,details.name,details.value,dollarSavings,features.feature,image,inStoreAvailability,manufacturer,modelNumber,name,regularPrice,salePrice,sku,upc&facet=onSale,10&pageSize=10&format=json`)
     .then((response) => {
       res.status(200).json({ products: response.data.products })
     })
@@ -108,7 +108,51 @@ router.post('/products', (req, res) => {
 });
 
 
+// CREATE REVIEW
+router.post('/products/:id/reviews', requireToken, (req, res, next) => {
+  const reviewData = req.body.review
+  reviewData.owner = req.user.id
+  Product.findById(req.params.id)
+    .then(handle404)
+    .then(product => {
+      product.reviews.push(reviewData)
+      return product.save()
+    })
+    .then(product => res.status(201).json({ product: product.toObject() }))
+    .catch(next)
+})
 
+// DELETE REVIEW
+router.delete('/products/:productId/reviews/:reviewId', requireToken, (req, res, next) => {
+  const { productId, reviewId } = req.params
+  Product.findById(productId)
+    .then(handle404)
+    .then(product => {
+      product.reviews = product.reviews.filter(r => r._id.toString() !== reviewId);
+      return product.save()
+    })
+    .then(() => res.sendStatus(204))
+    .catch(next)
+})
+
+
+
+// UPDATE REVIEW
+router.patch('/products/:productId/reviews/:reviewId', requireToken, (req, res, next) => {
+  const { productId, reviewId } = req.params
+  const reviewUpdates = req.body.review
+
+  Product.findById(productId)
+    .then(handle404)
+    .then(product => {
+      const review = product.reviews.id(reviewId)
+      requireOwnership(req, review)
+      review.set(reviewUpdates)
+      return product.save()
+    })
+    .then(() => res.sendStatus(204))
+    .catch(next)
+})
 
 
 
